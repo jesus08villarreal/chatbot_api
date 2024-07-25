@@ -50,7 +50,7 @@ async def orders():
     return orders
 
 def process_order(orders):
-    if "items" not in orders:
+    if "items" not in orders or not orders["items"]:
         return None
     for order in orders["items"]:
         save_order(order)
