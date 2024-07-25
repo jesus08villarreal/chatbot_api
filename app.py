@@ -50,10 +50,12 @@ async def orders():
     return orders
 
 def process_order(orders):
-    # Guardamos el pedido en la base de datos
+    if "items" not in orders:
+        return None
     for order in orders["items"]:
-        print(order)
         save_order(order)
+
+    return orders
         
 
 if __name__ == '__main__':
