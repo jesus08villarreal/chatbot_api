@@ -1,6 +1,6 @@
 To manually create a virtualenv on MacOS and Linux:
 
-# Use python3.11!!
+# Use python3.11
 
 ```
 $ python3 -m venv .venv
