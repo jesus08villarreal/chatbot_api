@@ -1,0 +1,24 @@
+language: python
+python:
+  - "3.9"
+
+services:
+  - docker
+
+before_install:
+  - pip install docker-compose
+
+# Comandos para instalar dependencias
+install:
+  - pip install -r requirements.txt
+
+# Comandos para ejecutar pruebas
+script:
+  - pytest
+
+# Despliegue (opcional)
+# deploy:
+#   provider: script
+#   script: bash deploy.sh
+#   on:
+#     branch: master
