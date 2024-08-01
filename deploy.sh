@@ -1,19 +1,17 @@
 #!/bin/bash
 
-# Ejemplo de script de despliegue
-# Esto puede ser tan complejo como necesites, dependiendo de tu entorno de despliegue
+echo "Iniciando el despliegue en Heroku..."
 
-echo "Desplegando la aplicación..."
+# Autenticarse en Heroku usando el API Key
+echo "machine api.heroku.com" > ~/.netrc
+echo "  login ${HEROKU_EMAIL}" >> ~/.netrc
+echo "  password ${HEROKU_API_KEY}" >> ~/.netrc
+echo "machine git.heroku.com" >> ~/.netrc
+echo "  login ${HEROKU_EMAIL}" >> ~/.netrc
+echo "  password ${HEROKU_API_KEY}" >> ~/.netrc
 
-# Conéctate a tu servidor y despliega la aplicación
-ssh -o StrictHostKeyChecking=no user@your-server-ip << 'ENDSSH'
-cd /ruta/a/tu/aplicacion
-git pull origin master
-pip install -r requirements.txt
-# Parar el proceso anterior si es necesario
-pkill -f 'uvicorn app:app'
-# Iniciar el nuevo proceso
-nohup uvicorn app:app --host 0.0.0.0 --port 8000 &
-ENDSSH
+# Añadir el remoto de Heroku y empujar el código
+git remote add heroku https://git.heroku.com/jatechbotapi.git
+git push heroku master --force
 
 echo "Despliegue completo."
