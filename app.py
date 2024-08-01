@@ -14,6 +14,10 @@ async def startup():
 
 app.add_event_handler("startup", startup)
 
+@app.post('/helloword')
+async def helloword(Body: str = Form(...)):
+    return {"message": f"Hello {Body}"}
+
 @app.post('/whatsapp')
 async def whatsapp(Body: str = Form(...)):
     incoming_msg = Body.lower()
