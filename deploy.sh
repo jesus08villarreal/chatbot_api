@@ -2,16 +2,20 @@
 
 echo "Iniciando el despliegue en Heroku..."
 
-# Autenticarse en Heroku usando el API Key
-echo "machine api.heroku.com" > ~/.netrc
-echo "  login ${HEROKU_EMAIL}" >> ~/.netrc
-echo "  password ${HEROKU_API_KEY}" >> ~/.netrc
-echo "machine git.heroku.com" >> ~/.netrc
-echo "  login ${HEROKU_EMAIL}" >> ~/.netrc
-echo "  password ${HEROKU_API_KEY}" >> ~/.netrc
+# Configurar autenticación en Heroku
+cat > ~/.netrc <<EOF
+machine api.heroku.com
+  login $HEROKU_EMAIL
+  password $HEROKU_API_KEY
+machine git.heroku.com
+  login $HEROKU_EMAIL
+  password $HEROKU_API_KEY
+EOF
 
-# Añadir el remoto de Heroku y empujar el código
-git remote add heroku https://git.heroku.com/jatechbotapi.git
+# Añadir el remoto de Heroku
+heroku git:remote -a jatechbotapi
+
+# Empujar a Heroku
 git push heroku master --force
 
 echo "Despliegue completo."
