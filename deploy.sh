@@ -18,4 +18,4 @@ heroku git:remote -a jatechbotapi
 # Empujar a Heroku
 git push heroku master --force
 
-echo "Despliegue completo."
+echo "Despliegue completo..."
