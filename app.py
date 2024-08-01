@@ -19,6 +19,7 @@ async def whatsapp(Body: str = Form(...)):
     incoming_msg = Body.lower()
     response = MessagingResponse()
     msg = response.message()
+    print(incoming_msg)
     gpt_response = generate_response(f"Extract the items and quantities from this order: {incoming_msg}")
 
     # Hacemos un json con el texto de la respuesta
