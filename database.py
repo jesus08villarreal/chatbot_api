@@ -1,27 +1,58 @@
 import sqlite3
+from fastapi import HTTPException
+from contextlib import contextmanager
+
 
 def init_db():
-    conn = sqlite3.connect('orders.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY, item TEXT, quantity INTEGER)''')
-    conn.commit()
-    conn.close()
+    with sqlite3.connect('database.db') as conn:
+        conn.execute("""
+        CREATE TABLE IF NOT EXISTS clients (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone TEXT,
+            email TEXT,
+            address TEXT,
+            named_has TEXT,
+            foreing_id INTEGER
+        );
+        """)
+        conn.execute("""
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT,
+            named_has TEXT,
+            foreing_id INTEGER
+        );
+        """)
+        conn.execute("""
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            client_id INTEGER,
+            order_date TEXT,
+            delivery_date TEXT,
+            delivery_time TEXT,
+            location TEXT,
+            confirmation_status TEXT,
+            FOREIGN KEY(client_id) REFERENCES clients(id)
+        );
+        """)
+        conn.execute("""
+        CREATE TABLE IF NOT EXISTS order_details (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER,
+            product_id INTEGER,
+            quantity INTEGER,
+            FOREIGN KEY(order_id) REFERENCES orders(id),
+            FOREIGN KEY(product_id) REFERENCES products(id)
+        );
+        """)
 
-def save_order(order):
-    with sqlite3.connect('orders.db') as conn:
-        c = conn.cursor()
-        c.execute('INSERT INTO orders (item, quantity) VALUES (?, ?)', (order["item"], order["quantity"]))
-        conn.commit()
-
-def get_orders():
-    with sqlite3.connect('orders.db') as conn:
-        c = conn.cursor()
-        c.execute('SELECT * FROM orders')
-        orders = c.fetchall()
-        headers = ['id', 'item', 'quantity']
-        orders_json = []
-        for order in orders:
-            order_json = dict(zip(headers, order))
-            orders_json.append(order_json)
-        return orders_json
+@contextmanager
+def get_db():
+    conn = sqlite3.connect('database.db')
+    try:
+        yield conn
+    finally:
+        conn.close()
 
