@@ -6,9 +6,6 @@ services:
   - docker
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y --only-upgrade openssl
-  - openssl version -a
   - pip install docker-compose
 
 # Comandos para instalar dependencias
@@ -16,6 +13,9 @@ install:
   - pip install -r requirements.txt
 
 # Comandos para ejecutar pruebas
+script:
+  - pytest
+
 deploy:
   provider: script
   script: bash deploy.sh
