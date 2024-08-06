@@ -6,6 +6,8 @@ from utils.openai_client import select_client, select_products, extract_date_tim
 import sqlite3
 import json
 import os
+import datetime
+import pandas as pd
 
 # Configuración de Twilio
 twilio_client = TwilioClient(os.getenv("TWILIO_ACCOUNT_SID"), os.getenv("TWILIO_AUTH_TOKEN"))
@@ -45,7 +47,7 @@ def whatsapp(Body: str = Form(...), db: sqlite3.Connection = Depends(get_db)):
 
             # Main Menu
             if not conversation_state["menu_selected"] or incoming_msg == "menu":
-                msg.body("Hola! ¿Qué te gustaría hacer hoy?\n1. Crear un pedido\n2. Consultar el estado de un pedido\n3. Actualizar información del cliente\nResponde con el número de la opción.")
+                msg.body("Hola! ¿Qué te gustaría hacer hoy?\n1. Crear un pedido\n2. Descargar pedidos del dia\n3. Actualizar información del cliente\nResponde con el número de la opción.")
                 conversation_state["menu_selected"] = True
                 return Response(content=str(response), media_type="text/xml")
 
@@ -55,8 +57,27 @@ def whatsapp(Body: str = Form(...), db: sqlite3.Connection = Depends(get_db)):
                     conversation_state["operation"] = "crear_pedido"
                     msg.body("Has seleccionado 'Crear un pedido'. Por favor, ingresa el nombre o información del cliente.")
                 elif incoming_msg == "2":
-                    conversation_state["operation"] = "consultar_pedido"
-                    msg.body("Has seleccionado 'Consultar el estado de un pedido'. Por favor, ingresa el ID del pedido.")
+                    conversation_state["operation"] = "descargar_pedidos"
+                    try:
+                        today = datetime.date.today()
+                        cursor.execute("SELECT * FROM orders WHERE delivery_date = ?", (today,))
+                        orders = cursor.fetchall()
+                    except sqlite3.Error:
+                        msg.body("Error al acceder a la base de datos de pedidos.")
+                        return Response(content=str(response), media_type="text/xml")
+
+                    if not orders:
+                        msg.body("No hay pedidos registrados.")
+                        conversation_state["operation"] = None
+                        return Response(content=str(response), media_type="text/xml")
+                    
+                    orders_dict = [{"id": order[0], "client_id": order[1], "order_date": order[2], "delivery_date": order[3], "delivery_time": order[4], "location": order[5], "confirmation_status": order[6]} for order in orders]
+
+                    # Hacemos un mensaje estructurado con los pedidos del día
+                    orders_message = "\n".join([f"ID: {order['id']}\nCliente: {order['client_id']}\nFecha de entrega: {order['delivery_date']} - {order['delivery_time']}\nEstado: {order['confirmation_status']}\n" for order in orders_dict])
+                    msg.body(f"Pedidos del día {today}:\n\n{orders_message}")
+                    
+                    conversation_state["operation"] = None
                 elif incoming_msg == "3":
                     conversation_state["operation"] = "actualizar_cliente"
                     msg.body("Has seleccionado 'Actualizar información del cliente'. Por favor, ingresa el nombre o información del cliente.")
@@ -64,6 +85,10 @@ def whatsapp(Body: str = Form(...), db: sqlite3.Connection = Depends(get_db)):
                     msg.body("Opción no válida. Por favor, responde con el número de la opción deseada.")
                     return Response(content=str(response), media_type="text/xml")
                 return Response(content=str(response), media_type="text/xml")
+            
+            # Descargar pedidos del día flow
+        
+
 
             # Crear Pedido Flow
             if conversation_state["operation"] == "crear_pedido":
