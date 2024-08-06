@@ -122,21 +122,27 @@ Los administradores pueden gestionar los clientes y productos a través de la ba
 Guía de Contribución para Usuarios
 Clona el repositorio:
 
+1. Clona el repositorio
 ```sh
 git clone https://github.com/jesus08villarreal/guaxuco_chatbot_api.git
 ```
-Crea un nuevo branch:
-
+2. Crea un nuevo branch:
 ```sh
 git checkout -b nombre-del-branch
 ```
-Realiza tus cambios y haz commit:
-
+3. Realiza tus cambios y haz commit:
 ```sh
 git commit -am "Descripción de los cambios"
 ```
-Envía el branch a GitHub:
-
+4. Envía el branch a GitHub:
 ```sh
 git push origin nombre-del-branch
 ```
+5. Abre un Pull Request en GitHub y espera la revisión.
+
+## Roadmap
+- Requerimientos que se Implementarán en el Futuro
+- Mejoras en el Procesamiento de Lenguaje Natural: Implementar más funcionalidades avanzadas de NLP para mejorar la precisión.
+- Integración con Otros Servicios de Mensajería: Expandir la funcionalidad para incluir otros servicios de  mensajería además de WhatsApp.
+- Panel de Administración: Crear un panel web para que los administradores puedan gestionar clientes, productos y pedidos de manera más eficiente.
+- Análisis de Datos: Implementar herramientas de análisis de datos para generar reportes y obtener insights sobre los pedidos.
