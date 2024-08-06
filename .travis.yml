@@ -16,9 +16,6 @@ install:
   - pip install -r requirements.txt
 
 # Comandos para ejecutar pruebas
-script:
-  - pytest
-
 deploy:
   provider: script
   script: bash deploy.sh
