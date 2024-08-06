@@ -3,6 +3,7 @@ from database import init_db
 from utils.auth import APIKeyMiddleware
 from routes import client_routes, product_routes, order_routes, whatsapp_routes
 from dotenv import load_dotenv
+from fastapi import Form
 
 load_dotenv()
 
@@ -20,6 +21,6 @@ async def startup():
 
 app.add_event_handler("startup", startup)
 
-# 
-# if __name__ == '__main__':
-#     uvicorn.run(app, host='0.0.0.0', port=8000)
+@app.post('/helloword')
+async def helloword(Body: str = Form(...)):
+    return {"message": f"Hello {Body}"}
