@@ -45,8 +45,6 @@ Guaxuco Chatbot API automatiza el proceso de toma de pedidos, permitiendo a los 
 - `pandas`
 - `python-dotenv`
 - `openai`
-- `boto3`
-- `botocore`
 
 ### Versiones
 
