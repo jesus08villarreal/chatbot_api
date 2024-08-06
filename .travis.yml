@@ -5,9 +5,6 @@ python:
 services:
   - docker
 
-before_install:
-  - pip install docker-compose
-
 # Comandos para instalar dependencias
 install:
   - pip install -r requirements.txt
