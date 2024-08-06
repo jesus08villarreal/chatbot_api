@@ -1,10 +1,12 @@
+import pytest
 from fastapi.testclient import TestClient
-from app import app
+from app import app  
 
 client = TestClient(app)
 
-def test_whatsapp():
-    name = "Chuy"
-    response = client.post("/helloword", data={"Body": name})
+
+# Prueba para el endpoint de WhatsApp
+def test_receive_whatsapp():
+    response = client.post("/whatsapp", data={"Body": "Hola, quiero hacer un pedido"})
     assert response.status_code == 200
-    assert response.json() == {"message": f"Hello {name}"}
+    assert "message" in response.text

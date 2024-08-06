@@ -5,3 +5,4 @@ spacy
 pandas
 python-dotenv
 openai
+pytest
