@@ -20,7 +20,3 @@ async def startup():
     init_db()
 
 app.add_event_handler("startup", startup)
-
-@app.post('/helloword')
-async def helloword(Body: str = Form(...)):
-    return {"message": f"Hello {Body}"}
