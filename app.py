@@ -25,4 +25,4 @@ app.add_event_handler("startup", startup)
 @app.post("/helloword")
 async def hello_word(Body: str = Form(...)):
     name = Body
-    return {"message": f"Hello {name}"}
+    return {"message": name}
