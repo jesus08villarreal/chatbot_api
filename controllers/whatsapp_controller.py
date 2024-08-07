@@ -85,10 +85,6 @@ def whatsapp(Body: str = Form(...), db: sqlite3.Connection = Depends(get_db)):
                     msg.body("Opción no válida. Por favor, responde con el número de la opción deseada.")
                     return Response(content=str(response), media_type="text/xml")
                 return Response(content=str(response), media_type="text/xml")
-            
-            # Descargar pedidos del día flow
-        
-
 
             # Crear Pedido Flow
             if conversation_state["operation"] == "crear_pedido":

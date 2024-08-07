@@ -1,26 +1,145 @@
-To manually create a virtualenv on MacOS and Linux:
+# Guaxuco Chatbot API
 
-# Use python3.11
+## Descripción
 
+Guaxuco Chatbot API es una solución automatizada diseñada para gestionar pedidos de productos a través de WhatsApp. Utiliza tecnologías avanzadas de procesamiento de lenguaje natural y servicios de mensajería para facilitar y mejorar la experiencia del cliente.
+
+## Problema Identificado
+
+El proceso manual de toma de pedidos a través de WhatsApp puede ser lento y propenso a errores. Además, la falta de una integración eficiente con sistemas de gestión y bases de datos complica el seguimiento y la organización de los pedidos.
+
+## Solución
+
+Guaxuco Chatbot API automatiza el proceso de toma de pedidos, permitiendo a los clientes realizar sus pedidos a través de WhatsApp de manera rápida y eficiente. La API está integrada con una base de datos para gestionar clientes y productos, y utiliza OpenAI para interpretar y procesar los mensajes de los clientes.
+
+## Arquitectura
+
+- **Frontend**: WhatsApp (interfaz de usuario)
+- **Backend**: FastAPI
+- **Base de Datos**: SQLite
+- **Mensajería**: Twilio API
+- **Procesamiento de Lenguaje Natural**: OpenAI
+
+## Tabla de Contenidos
+
+1. [Requerimientos](#requerimientos)
+2. [Instalación](#instalación)
+3. [Configuración](#configuración)
+4. [Uso](#uso)
+5. [Contribución](#contribución)
+6. [Roadmap](#roadmap)
+
+## Requerimientos
+
+### Servidores
+
+- **Servidor de Aplicación**: Heroku
+- **Base de Datos**: SQLite
+
+### Paquetes Adicionales
+
+- `fastapi`
+- `uvicorn`
+- `twilio`
+- `pandas`
+- `python-dotenv`
+- `openai`
+
+### Versiones
+
+- **Python**: 3.8 o superior
+
+## Instalación
+
+### ¿Cómo instalar el ambiente de desarrollo?
+Clona el repositorio:
+  
+   `git clone https://github.com/jesus08villarreal/guaxuco_chatbot_api.git`
+   `cd guaxuco_chatbot_api`
+Crea y activa un entorno virtual:
+
+```sh
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
 ```
-$ python3 -m venv .venv
+Instala las dependencias:
+
+```sh
+pip install -r requirements.txt
+```
+¿Cómo ejecutar pruebas manualmente?
+Inicia el servidor local:
+
+```sh
+uvicorn main:app --reload
+```
+Usa herramientas como curl o Postman para enviar solicitudes a la API.
+
+¿Cómo implementar la solución en producción en un ambiente local o en la nube como Heroku?
+Instala Heroku CLI y autentícate:
+
+```sh
+heroku login
+```
+Crea una aplicación en Heroku:
+
+```sh
+heroku create nombre-de-tu-aplicacion
+```
+Despliega la aplicación:
+
+```sh
+git push heroku master
+```
+Configura las variables de entorno en Heroku:
+
+```sh
+heroku config:set TWILIO_ACCOUNT_SID=tu_account_sid
+heroku config:set TWILIO_AUTH_TOKEN=tu_auth_token
+heroku config:set TWILIO_PHONE_NUMBER=tu_phone_number
+heroku config:set OPENAI_API_KEY=tu_openai_api_key
+heroku config:set HEROKU_APP_URL=https://tu-aplicacion.herokuapp.com
 ```
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+## Configuración
+Configuración del Producto
+Archivo .env: contiene las claves y tokens necesarios para la integración con Twilio y OpenAI.
+Configuración de los Requerimientos
+Twilio: Configura la cuenta de Twilio y el número de WhatsApp.
+OpenAI: Configura la API Key de OpenAI en el archivo .env.
 
-```
-$ source .venv/bin/activate
-```
+## Uso
+Sección de Referencia para Usuario Final
+Los usuarios pueden interactuar con el chatbot enviando mensajes a través de WhatsApp. El chatbot guiará al usuario a través del proceso de toma de pedidos.
 
-If you are a Windows platform, you would activate the virtualenv like this:
+Sección de Referencia para Usuario Administrador
+Los administradores pueden gestionar los clientes y productos a través de la base de datos y realizar consultas sobre el estado de los pedidos.
 
-```
-% .venv\Scripts\activate.bat
-```
+## Contribución
+Guía de Contribución para Usuarios
+Clona el repositorio:
 
-Once the virtualenv is activated, you can install the required dependencies.
+1. Clona el repositorio
+```sh
+git clone https://github.com/jesus08villarreal/guaxuco_chatbot_api.git
+```
+2. Crea un nuevo branch:
+```sh
+git checkout -b nombre-del-branch
+```
+3. Realiza tus cambios y haz commit:
+```sh
+git commit -am "Descripción de los cambios"
+```
+4. Envía el branch a GitHub:
+```sh
+git push origin nombre-del-branch
+```
+5. Abre un Pull Request en GitHub y espera la revisión.
 
-```
-$ pip install -r requirements.txt
-```
+## Roadmap
+- Requerimientos que se Implementarán en el Futuro
+- Mejoras en el Procesamiento de Lenguaje Natural: Implementar más funcionalidades avanzadas de NLP para mejorar la precisión.
+- Integración con Otros Servicios de Mensajería: Expandir la funcionalidad para incluir otros servicios de  mensajería además de WhatsApp.
+- Panel de Administración: Crear un panel web para que los administradores puedan gestionar clientes, productos y pedidos de manera más eficiente.
+- Análisis de Datos: Implementar herramientas de análisis de datos para generar reportes y obtener insights sobre los pedidos.

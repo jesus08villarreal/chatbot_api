@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 twilio
-spacy
 pandas
 python-dotenv
 openai
