@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String, Text
+from database import Base
 
-class Product(BaseModel):
-    id: int
-    name: str
-    description: str
-    named_has: str
-    foreing_id: int
+class Product(Base):
+    __tablename__ = "products"
 
-    class Config:
-        from_attributes = True
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    description = Column(String)
+    named_has = Column(Text)
+    foreing_id = Column(Integer)
