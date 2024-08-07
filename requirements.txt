@@ -5,3 +5,8 @@ spacy
 pandas
 python-dotenv
 openai
+pytest
+urllib3==1.26.6
+python-multipart
+sqlalchemy
+sqlalchemy_utils
