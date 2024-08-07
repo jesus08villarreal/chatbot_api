@@ -1,39 +1,40 @@
-from fastapi import Depends, HTTPException
-from database import get_db
-from models.client import Client
-import sqlite3
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from models.client import Client as ClientModel
+import schemas
 
-def create_client(client: Client, db: sqlite3.Connection = Depends(get_db)):
-    try:
-        with db as db:
-            cursor = db.cursor()
-            cursor.execute("INSERT INTO clients (name, phone, email, address, named_has) VALUES (?, ?, ?, ?, ?)",
-                           (client.name, client.phone, client.email, client.address, client.named_has))
-            db.commit()
-            return client
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def create_client(client: schemas.ClientCreate, db: Session):
+    with db as db:
+        db_client = ClientModel(**client.model_dump())
+        db.add(db_client)
+        db.commit()
+        db.refresh(db_client)
+        return db_client
 
-def get_clients(db: sqlite3.Connection = Depends(get_db)):
-    try:
-        with db as db:  
-            cursor = db.cursor()
-            cursor.execute("SELECT id, name, phone, email, address, named_has, foreing_id FROM clients")
-            clients = cursor.fetchall()
-            clients = [Client(id=client[0], name=client[1], phone=client[2], email=client[3], address=client[4], named_has=client[5], foreing_id=client[6]) for client in clients]
-            return clients
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def get_client(db: Session, client_id: int):
+    with db as db:
+        return db.query(ClientModel).filter(ClientModel.id == client_id).first()
 
-def update_client(id: int, client: Client, db: sqlite3.Connection = Depends(get_db)):
-    try:
-        with db as db:
-            cursor = db.cursor()
-            cursor.execute("UPDATE clients SET name = ?, phone = ?, email = ?, address = ?, named_has = ?, foreing_id = ? WHERE id = ?",
-                           (client.name, client.phone, client.email, client.address, client.named_has, client.foreing_id, id))
-            db.commit()
-            return client
-            
+def get_clients(db: Session, skip: int = 0, limit: int = 100):
+    with db as db:
+        return db.query(ClientModel).offset(skip).limit(limit).all()
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def update_client(client_id: int, client: schemas.ClientUpdate, db: Session):
+    with db as db:
+        db_client = db.query(ClientModel).filter(ClientModel.id == client_id).first()
+        if not db_client:
+            raise HTTPException(status_code=404, detail="Client not found")
+        for key, value in client.model_dump().items():
+            setattr(db_client, key, value)
+        db.commit()
+        db.refresh(db_client)
+        return db_client
+
+def delete_client(client_id: int, db: Session):
+    with db as db:
+        db_client = db.query(ClientModel).filter(ClientModel.id == client_id).first()
+        if not db_client:
+            raise HTTPException(status_code=404, detail="Client not found")
+        db.delete(db_client)
+        db.commit()
+        return {"detail": "Client deleted"}

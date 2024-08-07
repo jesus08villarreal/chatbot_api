@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from sqlalchemy import Column, Integer, ForeignKey
+from database import Base
 
-class OrderDetail(BaseModel):
-    id: int
-    order_id: int
-    product_id: int
-    quantity: int
+class OrderDetail(Base):
+    __tablename__ = "order_details"
 
-    class Config:
-        from_attributes = True
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"))
+    product_id = Column(Integer, ForeignKey("products.id"))
+    quantity = Column(Integer)
