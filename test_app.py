@@ -7,5 +7,5 @@ client = TestClient(app)
 
 # Prueba para el endpoint de WhatsApp
 def test_receive_whatsapp():
-    response = client.post("/helloword", json={"Body": "Hola, quiero hacer un pedido"})
+    response = client.post("/api/whatsapp", json={"Body": "Hola, quiero hacer un pedido", "From": "1234567890"})
     assert response.status_code == 200
