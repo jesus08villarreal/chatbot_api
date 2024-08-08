@@ -41,8 +41,6 @@ def select_products(message: str, products: List[Dict]) -> List[Dict]:
         return response.choices[0].message.content
 
 def extract_date_time(message: str) -> Dict:
-        #TODO: Que siempre regrese la misma respuesta en el json con los mismos nombres de llaves y en el mismo formato DD/MM/YYYY para 
-        # la fecha y HH:MM para la hora
         try:
             response = client.chat.completions.create(
                 model="gpt-4-turbo",

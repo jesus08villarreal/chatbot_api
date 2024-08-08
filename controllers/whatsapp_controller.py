@@ -196,12 +196,12 @@ def whatsapp(Body: str = Form(...), From: str = Form(...), db: Session = Depends
                             "Hemos recibido tu solicitud y estamos procesándola. Te contactaremos pronto con los detalles de entrega. ¡Que tengas un excelente día!"
                         )
                         print(confirmation_message)
-                        # message = twilio_client.messages.create(
-                        #     body=confirmation_message,
-                        #     from_="whatsapp:{}".format(os.getenv("TWILIO_PHONE_NUMBER")),
-                        #     to="whatsapp:{}".format(client_phone)
-                        # )
-                        # print(message.sid)
+                        message = twilio_client.messages.create(
+                            body=confirmation_message,
+                            from_="whatsapp:{}".format(os.getenv("TWILIO_PHONE_NUMBER")),
+                            to="whatsapp:{}".format(client_phone)
+                        )
+                        print(message.sid)
                     except Exception as e:
                         print(e)
                         msg.body("Error al registrar el pedido en la base de datos.")
