@@ -32,7 +32,7 @@ def whatsapp(Body: str = Form(...), From: str = Form(...), db: Session = Depends
     try:
         # Main Menu
         if not conversation_state.menu_selected or incoming_msg == "menu":
-            msg.body("Hola! ¿Qué te gustaría hacer hoy?\n1. Crear un pedido\n2. Descargar pedidos del dia\n3. Actualizar información del cliente\nResponde con el número de la opción.")
+            msg.body("Hola! ¿Qué te gustaría hacer hoy?\n1. Crear un pedido\n2. Ver pedidos del dia\n3. Actualizar información del cliente\nResponde con el número de la opción.")
             conversation_state.menu_selected = True
             conversation_state_controller.create_or_update_conversation_state(From, schemas.ConversationStateUpdate(**conversation_state.__dict__), db)
             return Response(content=str(response), media_type="text/xml")
