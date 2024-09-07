@@ -59,8 +59,8 @@ Clona el repositorio:
 Crea y activa un entorno virtual:
 
 ```sh
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate  # En Windows: .venv\Scripts\activate
 ```
 Instala las dependencias:
 
