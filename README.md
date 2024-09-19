@@ -71,7 +71,7 @@ pip install -r requirements.txt
 Inicia el servidor local:
 
 ```sh
-uvicorn main:app --reload
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 Usa herramientas como curl o Postman para enviar solicitudes a la API.
 
