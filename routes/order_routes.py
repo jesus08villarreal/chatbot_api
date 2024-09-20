@@ -1,32 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from database import get_db
-from typing import List
-import schemas
-import controllers.order_controller as order_controller
+# routes/order_routes.py
+from fastapi import APIRouter, HTTPException
+from crud.order_crud import create_order, get_orders, get_order_by_id, update_order, delete_order
+from models.order import Order
 
 router = APIRouter()
 
-@router.post("/orders/", response_model=schemas.Order)
-def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
-    return order_controller.create_order(order, db)
+@router.post("/orders/")
+async def create_new_order(order: Order):
+    return await create_order(order)
 
-@router.get("/orders/", response_model=List[schemas.Order])
-def read_orders(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    orders = order_controller.get_orders(db, skip=skip, limit=limit)
-    return orders
+@router.get("/orders/")
+async def get_all_orders():
+    return await get_orders()
 
-@router.get("/orders/{order_id}", response_model=schemas.Order)
-def read_order(order_id: int, db: Session = Depends(get_db)):
-    db_order = order_controller.get_order(db, order_id=order_id)
-    if db_order is None:
+@router.get("/orders/{id}")
+async def get_order(id: str):
+    order = await get_order_by_id(id)
+    if not order:
         raise HTTPException(status_code=404, detail="Order not found")
-    return db_order
+    return order
 
-@router.put("/orders/{order_id}", response_model=schemas.Order)
-def update_order(order_id: int, order: schemas.OrderUpdate, db: Session = Depends(get_db)):
-    return order_controller.update_order(order_id, order, db)
+@router.put("/orders/{id}")
+async def update_order_data(id: str, order: Order):
+    await update_order(id, order)
+    return {"message": "Order updated"}
 
-@router.delete("/orders/{order_id}", response_model=schemas.Order)
-def delete_order(order_id: int, db: Session = Depends(get_db)):
-    return order_controller.delete_order(order_id, db)
+@router.delete("/orders/{id}")
+async def delete_order_data(id: str):
+    await delete_order(id)
+    return {"message": "Order deleted"}

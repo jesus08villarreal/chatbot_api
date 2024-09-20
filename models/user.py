@@ -1,9 +1,8 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 
-class Product(BaseModel):
+class User(BaseModel):
     id: Optional[str]
+    phone: str
     name: str
-    description: str
-    named_as: str
     company_id: str

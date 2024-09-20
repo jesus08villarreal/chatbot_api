@@ -1,13 +1,17 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from database import Base
+from pydantic import BaseModel, Field
+from typing import List, Optional
 
-class Order(Base):
-    __tablename__ = "orders"
+class OrderDetail(BaseModel):
+    product_id: str
+    quantity: int
 
-    id = Column(Integer, primary_key=True, index=True)
-    client_id = Column(Integer, ForeignKey("clients.id"))
-    order_date = Column(String)
-    delivery_date = Column(String)
-    delivery_time = Column(String)
-    location = Column(String)
-    confirmation_status = Column(String)
+class Order(BaseModel):
+    id: Optional[str]
+    client_id: str
+    company_id: str
+    order_date: str
+    delivery_date: str
+    delivery_time: str
+    location: str
+    products: List[OrderDetail]
+    confirmation_status: str

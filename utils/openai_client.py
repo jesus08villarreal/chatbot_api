@@ -3,7 +3,6 @@ import os
 from typing import List, Dict
 
 open_ai_key = os.getenv("OPENAI_API_KEY")
-
 client = OpenAI()
 
 client.api_key = open_ai_key

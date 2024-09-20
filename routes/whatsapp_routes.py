@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Form, Depends
-from controllers.whatsapp_controller import whatsapp
+from twilio_openai_manager.whatsapp_controller import whatsapp
 import sqlite3
 from database import get_db
 
