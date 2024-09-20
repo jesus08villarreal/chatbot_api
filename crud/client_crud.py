@@ -2,16 +2,21 @@
 from models.client import Client
 from database import clients_collection
 from bson import ObjectId
+import json
 
 # Crear un cliente
 async def create_client(client: Client):
-    client_data = client.dict()
-    result = await clients_collection.insert_one(client_data)
+    print(client)
+    # Make a json to send to the database
+    client_data = client.model_dump()
+
+    result = clients_collection.insert_one(client_data)
     return str(result.inserted_id)
 
 # Obtener clientes
 async def get_clients():
     clients = []
+    print(clients_collection.find())
     async for client in clients_collection.find():
         clients.append(Client(**client))
     return clients
@@ -24,7 +29,7 @@ async def get_client_by_phone(phone: str):
 
 # Actualizar cliente
 async def update_client(id: str, client: Client):
-    await clients_collection.update_one({"_id": ObjectId(id)}, {"$set": client.dict()})
+    await clients_collection.update_one({"_id": ObjectId(id)}, {"$set": client.model_dump()})
 
 # Eliminar cliente
 async def delete_client(id: str):
