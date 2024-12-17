@@ -16,10 +16,8 @@ except pymongo.errors.ConfigurationError:
 
 
 database = client["chatbot_db"]
-print('Collections: ', database.list_collections())
 
 users_collection = database.get_collection("users")
-print(users_collection)
 companies_collection = database.get_collection("companies")
 products_collection = database.get_collection("products")
 orders_collection = database.get_collection("orders")
